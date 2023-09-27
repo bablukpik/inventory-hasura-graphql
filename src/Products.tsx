@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import Statistic from "antd/es/statistic/Statistic";
-import { Table, Button, Card, Row, Col, Space } from "antd";
+import { Table, Button, Card, Row, Col } from "antd";
 
 export interface Product {
   id: number;
@@ -62,7 +62,7 @@ export function Products(): JSX.Element {
   const totalStock = data?.products_aggregate?.aggregate?.sum?.stock ?? 0;
   const totalValue =
     data?.products?.reduce?.((acc: number, product: Product) => {
-      return acc + product?.stock * product?.price;
+      return acc + Number(product?.stock ?? 0) * Number(product?.price ?? 0);
     }, 0) ?? 0;
 
   const rows: Product[] =
@@ -71,7 +71,7 @@ export function Products(): JSX.Element {
       name: product?.name,
       price: `$${product?.price}`,
       stock: product?.stock,
-      value: `$${product?.stock * product?.price}`,
+      value: `$${Number(product?.stock ?? 0) * Number(product?.price ?? 0)}`,
     })) || [];
 
   if (error) {
