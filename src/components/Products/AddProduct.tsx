@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { Form, Input, Button, message, Modal } from "antd";
-import { AddProductProps, Product } from "./type";
+import { AddProductProps, Product } from "./types";
 import { ADD_PRODUCT } from "./mutations";
 import { GET_PRODUCTS_WITH_AGGREGATE } from "./queries";
 

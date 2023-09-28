@@ -3,7 +3,7 @@ import Statistic from "antd/es/statistic/Statistic";
 import { Table, Button, Card, Row, Col } from "antd";
 import AddProduct from "./AddProduct";
 import { useState } from "react";
-import { Product } from "./type";
+import { Product } from "./types";
 import { GET_PRODUCTS_WITH_AGGREGATE } from "./queries";
 
 const columns = [
@@ -29,7 +29,7 @@ const columns = [
   },
 ];
 
-function Products(): JSX.Element {
+function Products() {
   const [open, setOpen] = useState(false);
   const { loading, error, data } = useQuery(GET_PRODUCTS_WITH_AGGREGATE);
 
@@ -60,29 +60,17 @@ function Products(): JSX.Element {
       <Row gutter={[16, 16]}>
         <Col span={8}>
           <Card>
-            <Statistic
-              title="Total products"
-              value={totalCount}
-              loading={loading}
-            />
+            <Statistic title="Total products" value={totalCount} />
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <Statistic
-              title="Total Stock"
-              value={totalStock}
-              loading={loading}
-            />
+            <Statistic title="Total Stock" value={totalStock} />
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <Statistic
-              title="Total Value"
-              value={`$${totalValue}`}
-              loading={loading}
-            />
+            <Statistic title="Total Value" value={`$${totalValue}`} />
           </Card>
         </Col>
       </Row>
