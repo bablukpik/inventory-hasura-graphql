@@ -31,9 +31,7 @@ const columns = [
 
 function Products(): JSX.Element {
   const [open, setOpen] = useState(false);
-  const { loading, error, data } = useQuery(GET_PRODUCTS_WITH_AGGREGATE, {
-    fetchPolicy: "cache-and-network",
-  });
+  const { loading, error, data } = useQuery(GET_PRODUCTS_WITH_AGGREGATE);
 
   const totalCount = data?.products_aggregate?.aggregate?.count ?? 0;
   const totalStock = data?.products_aggregate?.aggregate?.sum?.stock ?? 0;

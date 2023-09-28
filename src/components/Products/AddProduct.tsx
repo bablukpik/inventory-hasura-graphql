@@ -21,7 +21,6 @@ function AddProduct({ open, onCancel }: AddProductProps) {
       form.resetFields();
       message.success("Product added successfully!");
     } catch (error: any) {
-      console.error(error);
       message.error(`Error: ${error.message}`);
     }
   };
