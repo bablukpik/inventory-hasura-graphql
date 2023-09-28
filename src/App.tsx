@@ -6,7 +6,7 @@ import {
   InMemoryCache,
   HttpLink,
 } from "@apollo/client";
-import { Products } from "./Products";
+import Products from "./components/Products";
 import "./App.css";
 
 const { Header, Content } = Layout;
