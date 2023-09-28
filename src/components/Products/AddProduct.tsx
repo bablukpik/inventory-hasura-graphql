@@ -28,8 +28,8 @@ function AddProduct({ open, onCancel }: AddProductProps) {
   };
 
   const validateNonZero = (_rule: RuleObject, value: StoreValue) => {
-    if (Number(value) === 0) {
-      return Promise.reject("Value cannot be 0");
+    if (Number(value) === 0 || Number(value) < 0) {
+      return Promise.reject("Value cannot be zero or negative");
     }
     return Promise.resolve();
   };
