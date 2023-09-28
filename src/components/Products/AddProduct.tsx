@@ -3,6 +3,8 @@ import { Form, Input, Button, message, Modal } from "antd";
 import { AddProductProps, Product } from "./types";
 import { ADD_PRODUCT } from "./mutations";
 import { GET_PRODUCTS_WITH_AGGREGATE } from "./queries";
+import { RuleObject } from "antd/es/form";
+import { StoreValue } from "antd/es/form/interface";
 
 function AddProduct({ open, onCancel }: AddProductProps) {
   const [form] = Form.useForm();
@@ -23,6 +25,13 @@ function AddProduct({ open, onCancel }: AddProductProps) {
     } catch (error: any) {
       message.error(`Error: ${error.message}`);
     }
+  };
+
+  const validateNonZero = (_rule: RuleObject, value: StoreValue) => {
+    if (Number(value) === 0) {
+      return Promise.reject("Value cannot be 0");
+    }
+    return Promise.resolve();
   };
 
   return (
@@ -51,16 +60,22 @@ function AddProduct({ open, onCancel }: AddProductProps) {
           <Form.Item
             name="price"
             label="Price"
-            rules={[{ required: true, message: "Required" }]}
+            rules={[
+              { required: true, message: "Required" },
+              { validator: validateNonZero },
+            ]}
           >
-            <Input type="number" min={0} step={0.01} />
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             name="stock"
             label="Stock"
-            rules={[{ required: true, message: "Required" }]}
+            rules={[
+              { required: true, message: "Required" },
+              { validator: validateNonZero },
+            ]}
           >
-            <Input type="number" min={0} step={1} />
+            <Input type="number" />
           </Form.Item>
 
           <div
