@@ -64,7 +64,7 @@ function Products(): JSX.Element {
           <Card>
             <Statistic
               title="Total products"
-              value={`$${totalCount}`}
+              value={totalCount}
               loading={loading}
             />
           </Card>
@@ -73,7 +73,7 @@ function Products(): JSX.Element {
           <Card>
             <Statistic
               title="Total Stock"
-              value={`$${totalStock}`}
+              value={totalStock}
               loading={loading}
             />
           </Card>
