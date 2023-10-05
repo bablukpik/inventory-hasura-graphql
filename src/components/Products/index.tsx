@@ -1,19 +1,31 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Statistic from "antd/es/statistic/Statistic";
-import { Table, Button, Card, Row, Col, Space } from "antd";
+import {
+  Table,
+  Button,
+  Card,
+  Row,
+  Col,
+  Space,
+  Popconfirm,
+  message,
+} from "antd";
 import AddProduct from "./AddProduct";
 import { useState } from "react";
 import { Product } from "./types";
 import { GET_PRODUCTS_WITH_AGGREGATE } from "./queries";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import UpdateProduct from "./UpdateProduct";
+import { DELETE_PRODUCTS_BY_PK } from "./mutations";
 
 function Products() {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { loading, error, data } = useQuery(GET_PRODUCTS_WITH_AGGREGATE);
+  const [deleteProduct] = useMutation(DELETE_PRODUCTS_BY_PK, {
+    refetchQueries: [{ query: GET_PRODUCTS_WITH_AGGREGATE }],
+  });
 
   const totalCount = data?.products_aggregate?.aggregate?.count ?? 0;
   const totalStock = data?.products_aggregate?.aggregate?.sum?.stock ?? 0;
@@ -31,15 +43,20 @@ function Products() {
     setUpdateModalOpen(true);
   };
 
-  const handleDeleteClick = (product: Product) => {
-    setSelectedProduct(product);
-    setDeleteModalOpen(true);
+  const handleDeleteClick = async (id: number) => {
+    try {
+      await deleteProduct({
+        variables: { id },
+      });
+      message.success("Product deleted successfully!");
+    } catch (error: any) {
+      message.error(`Error: ${error.message}`);
+    }
   };
 
   const handleModalClose = () => {
     setAddModalOpen(false);
     setUpdateModalOpen(false);
-    setDeleteModalOpen(false);
   };
 
   const columns = [
@@ -74,13 +91,19 @@ function Products() {
             icon={<EditOutlined />}
             onClick={() => handleEditClick(product)}
           />
-          <Button
-            type="primary"
-            danger
-            shape="circle"
-            icon={<DeleteOutlined />}
-            onClick={() => handleDeleteClick(product)}
-          />
+          <Popconfirm
+            title="Are you sure you want to delete this product?"
+            onConfirm={() => handleDeleteClick(product.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              type="primary"
+              danger
+              shape="circle"
+              icon={<DeleteOutlined />}
+            />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -130,7 +153,11 @@ function Products() {
         </div>
         <Table columns={columns} dataSource={rows} loading={loading} />
         <AddProduct open={addModalOpen} onCancel={handleModalClose} />
-        <UpdateProduct open={updateModalOpen} onCancel={handleModalClose} product={selectedProduct} />
+        <UpdateProduct
+          open={updateModalOpen}
+          onCancel={handleModalClose}
+          product={selectedProduct}
+        />
       </Card>
     </>
   );

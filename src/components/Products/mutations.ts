@@ -49,3 +49,11 @@ export const UPDATE_PRODUCTS_BY_PK = gql`
     }
   }
 `;
+
+export const DELETE_PRODUCTS_BY_PK = gql`
+  mutation DeleteProductsByPk ($id: Int!) {
+    delete_products_by_pk(id: $id) {
+      name
+    }
+  }
+`;
