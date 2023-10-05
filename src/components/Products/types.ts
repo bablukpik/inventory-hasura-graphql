@@ -10,3 +10,7 @@ export interface AddProductProps {
   open: boolean;
   onCancel: () => void;
 }
+
+export interface UpdateProductProps extends AddProductProps {
+  product: Product | null;
+}

@@ -1,26 +1,35 @@
+import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { Form, Input, Button, message, Modal } from "antd";
-import { AddProductProps, Product } from "./types";
-import { ADD_PRODUCT } from "./mutations";
+import { UpdateProductProps, Product } from "./types";
+import { UPDATE_PRODUCTS_BY_PK } from "./mutations";
 import { GET_PRODUCTS_WITH_AGGREGATE } from "./queries";
 import { validateNonZero } from "../../utils/validation.util";
 
-function AddProduct({ open, onCancel }: AddProductProps) {
+function UpdateProduct({ open, onCancel, product }: UpdateProductProps) {
   const [form] = Form.useForm();
-
-  const [addProduct] = useMutation(ADD_PRODUCT, {
+  const [updateProduct] = useMutation(UPDATE_PRODUCTS_BY_PK, {
     refetchQueries: [{ query: GET_PRODUCTS_WITH_AGGREGATE }],
   });
 
-  const handleSubmit = async (values: Omit<Product, "id">) => {
+  useEffect(() => {
+    if (product) {
+      const modifiedProduct = {
+        ...product,
+        price: product.price.toString().replace("$", ""),
+      };
+      form.setFieldsValue(modifiedProduct);
+    }
+  }, [form, product]);
+
+  const handleSubmit = async (formValues: Product) => {
     try {
-      await addProduct({
-        variables: {
-          ...values,
-        },
+      const payload = { ...formValues, id: product?.id}
+      await updateProduct({
+        variables: payload,
       });
       form.resetFields();
-      message.success("Product added successfully!");
+      message.success("Product updated successfully!");
     } catch (error: any) {
       message.error(`Error: ${error.message}`);
     }
@@ -30,7 +39,7 @@ function AddProduct({ open, onCancel }: AddProductProps) {
     <>
       <Modal
         open={open}
-        title="Add New Product"
+        title="Update Product"
         onCancel={onCancel}
         footer={null}
       >
@@ -88,4 +97,4 @@ function AddProduct({ open, onCancel }: AddProductProps) {
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;

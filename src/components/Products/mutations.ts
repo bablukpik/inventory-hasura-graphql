@@ -23,3 +23,29 @@ export const ADD_PRODUCT = gql`
     }
   }
 `;
+
+export const UPDATE_PRODUCTS_BY_PK = gql`
+  mutation UpdateProductsByPk(
+    $id: Int!
+    $name: String!
+    $description: String!
+    $price: numeric!
+    $stock: Int!
+  ) {
+    update_products_by_pk(
+      pk_columns: { id: $id }
+      _set: {
+        name: $name
+        description: $description
+        price: $price
+        stock: $stock
+      }
+    ) {
+      id
+      name
+      description
+      price
+      stock
+    }
+  }
+`;
