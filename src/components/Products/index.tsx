@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import Statistic from "antd/es/statistic/Statistic";
 import { Table, Button, Card, Row, Col } from "antd";
@@ -31,6 +32,7 @@ const columns = [
 
 function Products() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(GET_PRODUCTS_WITH_AGGREGATE);
 
   const totalCount = data?.products_aggregate?.aggregate?.count ?? 0;
@@ -49,7 +51,10 @@ function Products() {
       value: `$${Number(product?.stock ?? 0) * Number(product?.price ?? 0)}`,
     })) || [];
 
-  const handleToggleModal = () => setOpen((prev: boolean) => !prev);
+  const handleToggleModal = () => {
+    navigate("/add-product");
+    setOpen((prev: boolean) => !prev);
+  };
 
   if (error) {
     return <p>Error: {error.message}</p>;

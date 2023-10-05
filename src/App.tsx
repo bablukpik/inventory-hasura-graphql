@@ -6,8 +6,8 @@ import {
   InMemoryCache,
   HttpLink,
 } from "@apollo/client";
-import Products from "./components/Products";
 import "./App.css";
+import Pages from "./pages";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -36,7 +36,7 @@ function App() {
             </Title>
           </Header>
           <Content style={{ padding: "1em" }}>
-            <Products />
+            <Pages />
           </Content>
         </Layout>
       </div>
