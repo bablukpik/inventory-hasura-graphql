@@ -99,7 +99,7 @@ function Products() {
             title={() => (
               <>
                 Are you sure you want to delete the product{" "}
-                <strong>${product.name}</strong>?
+                <strong>{product.name}</strong>?
               </>
             )}
             onConfirm={() => handleDeleteClick(product.id)}
