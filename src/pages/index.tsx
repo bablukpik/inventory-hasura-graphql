@@ -7,6 +7,8 @@ export default function Pages() {
       <Routes>
         <Route path="/" element={<Products />} />
         <Route path="/add-product" element={<Products />} />
+        <Route path="/update-product" element={<Products />} />
+        <Route path="/delete-product" element={<Products />} />
       </Routes>
     </BrowserRouter>
   );
