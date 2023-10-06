@@ -98,7 +98,7 @@ function Products() {
           <Popconfirm
             title={() => (
               <>
-                Are you sure you want to delete the product{" "}
+                Are you sure you want to delete the product
                 <strong>{product.name}</strong>?
               </>
             )}
